@@ -158,7 +158,7 @@ Every story file has a single `Status:` field near the top, one of five values. 
 `Draft` → `Ready` → `In Progress` → `Done`
 
 - **Draft / Ready** — pre-work states, gated by the Definition of Ready above. The story content is freely editable.
-- **Deferred** — a non-actionable status, outside the lifecycle above, for a `Draft` or `Ready` story taken out of the current scope by a decision. The story is kept for reference, not deleted, and is not refined, estimated, or synced to Jira (`jira-sync` skips it). Its `Notes:` must cite the decision and its date, and where the scope change is recorded (e.g. the `Out of Scope` section of `docs/reqs/<domain>.md`). When the scope is reopened, set it back to `Draft` and re-check it against the current requirements and architecture before it can be `Ready`.
+- **Deferred** — a non-actionable status, outside the lifecycle above, for a `Draft` or `Ready` story taken out of the current scope by a decision. The story is kept for reference, not deleted, and is not refined, estimated, or synced to the ticket tracker (`ticket-sync` skips it). Its `Notes:` must cite the decision and its date, and where the scope change is recorded (e.g. the `Out of Scope` section of `docs/reqs/<domain>.md`). When the scope is reopened, set it back to `Draft` and re-check it against the current requirements and architecture before it can be `Ready`.
 - **In Progress / Done** — once a story reaches either of these, its content is **locked**: `User Story`, `Acceptance Criteria`, `Test Case Requirements`, `Out of Scope`, and `Estimate` must not be altered. `Tasks` is locked in the same sense (no adding/removing/rewriting tasks), except that checking off individual tasks as work completes is expected and allowed. This reflects that work has started or shipped against that exact spec — changing it out from under development or after delivery would make the story an inaccurate record of what was built.
   - **Allowed exceptions** to the lock: (1) moving `Status` forward to the next value, (2) checking off `Tasks` checklist items, and (3) appending a one-line backlink note (see below) — all additive, never a rewrite of existing content.
 - If new work is needed on a locked story (a change of scope, a bug found later, a follow-up), do not edit it. Instead, create a **continuation story**:
@@ -167,12 +167,12 @@ Every story file has a single `Status:` field near the top, one of five values. 
   3. Append a single line to the *locked* story's `Notes:` section: `Continued by: docs/userstories/<domain>/<slug>-2.md` — this is the one permitted addition to a locked file's Notes.
 - Moving a story backward (e.g. `Done` back to `In Progress`) is a high-impact/hard-to-reverse decision — don't do it silently; ask via #tool:vscode/askQuestions.
 
-## 11) Flagging Removed Content for Jira
+## 11) Flagging Removed Content for the Ticket Tracker
 
-`jira-sync` only ever *adds* to Jira on its own — it never decides something should be cancelled or removed. If you remove content from a story that already has a Jira key attached (its own `Jira: <KEY>` line, or a task's `(Jira: <KEY>)` suffix), you must leave a marker so `jira-sync` knows what to do next time it runs:
+`ticket-sync` only ever *adds* to the tracker on its own — it never decides something should be cancelled or removed. If you remove content from a story that already has a ticket key attached (its own `Ticket: <KEY>` line, or a task's `(Ticket: <KEY>)` suffix), you must leave a marker so `ticket-sync` knows what to do next time it runs:
 
-- **Removing a `Tasks:` line** (not just unchecking it) from a story that's already synced: add `Jira sync action needed: cancel sub-task (Jira: <KEY>) — <reason>` to that story's `Notes:`, using the key from the removed task's `(Jira: <KEY>)` suffix.
-- **Removing/replacing a `Design:` reference** whose image was already attached in Jira: add `Jira sync action needed: remove attachment <filename> from (Jira: <KEY>) — <reason>` to `Notes:`.
-- **Deleting an entire story file** that has its own `Jira: <KEY>` line: before deleting it, append an entry to `docs/userstories/.jira-retirements.md` listing the story's Jira key, every Sub-task key its `Tasks:` lines held, and the reason — then delete the file.
+- **Removing a `Tasks:` line** (not just unchecking it) from a story that's already synced: add `Ticket sync action needed: cancel sub-task (Ticket: <KEY>) — <reason>` to that story's `Notes:`, using the key from the removed task's `(Ticket: <KEY>)` suffix.
+- **Removing/replacing a `Design:` reference** whose image was already attached in the tracker: add `Ticket sync action needed: remove attachment <filename> from (Ticket: <KEY>) — <reason>` to `Notes:`.
+- **Deleting an entire story file** that has its own `Ticket: <KEY>` line: before deleting it, append an entry to `docs/tickets/retirements.md` listing the story's ticket key, every Sub-task key its `Tasks:` lines held, and the reason — then delete the file.
 
-`jira-sync` clears each marker once it's acted on it (replacing it with a past-tense `Retired: ...` note, or marking the `.jira-retirements.md` entry processed) — don't remove a marker yourself before that happens.
+`ticket-sync` clears each marker once it's acted on it (replacing it with a past-tense `Retired: ...` note, or marking the `docs/tickets/retirements.md` entry processed) — don't remove a marker yourself before that happens.

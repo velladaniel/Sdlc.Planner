@@ -7,6 +7,7 @@
     <Version>1.0.0</Version>
     <Authors>Daniel Vella</Authors>
     <Copyright>Copyright (c) Daniel Vella</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>Sdlc.Planner AI harness: Copilot agents, instructions and docs templates (requirements, architecture, designs, user stories, QA, Jira sync) synced into the consuming repo on build.</Description>
     <PackageTags>copilot;agents;skills;sdlc;planning</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>

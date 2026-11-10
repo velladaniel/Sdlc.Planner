@@ -14,9 +14,9 @@ handoffs:
     agent: automation-qa
     prompt: The stories under docs/userstories/<domain>/ are drafted. Review them and produce the automation QA plan at docs/qa/<domain>.md, so the automation enabler stories can be drafted alongside them.
     send: false
-  - label: Sync these stories to Jira
-    agent: jira-sync
-    prompt: Sync the Status: Ready user stories under docs/userstories/<domain>/ into Jira.
+  - label: Sync these stories to the ticket tracker
+    agent: ticket-sync
+    prompt: Sync the Status: Ready user stories under docs/userstories/<domain>/ into the configured ticket tracker.
     send: false
 ---
 
@@ -28,7 +28,7 @@ See [user-stories.instructions.md](../instructions/user-stories.instructions.md)
 
 ## Proposal Mode
 
-If the user is brainstorming/exploring, names a proposal, the active file is under `docs/proposals/`, or `docs/proposals/.active` holds a slug, work in **proposal mode** per [.github/instructions/proposals.instructions.md](../instructions/proposals.instructions.md): write **only** inside `docs/proposals/<slug>/` (mirroring the real `docs/` paths and templates), leave every real doc, the project overview, the risk log, technical decisions and Jira untouched, read the real docs as the baseline, and record contradictions under *Conflicts with current docs* in `proposal.md`. Resolve the proposal as described in the instructions file, and start every reply with `Proposal: <slug>` so the user can see which sandbox you are in. In proposal mode, every `docs/...` path in your Workflow, Scope and handoff prompts means the mirrored path inside the proposal (e.g. `docs/reqs/x.md` → `docs/proposals/<slug>/reqs/x.md`). Promotion into the real docs is done only by the `proposals` agent.
+If the user is brainstorming/exploring, names a proposal, the active file is under `docs/proposals/`, or `docs/proposals/.active` holds a slug, work in **proposal mode** per [.github/instructions/proposals.instructions.md](../instructions/proposals.instructions.md): write **only** inside `docs/proposals/<slug>/` (mirroring the real `docs/` paths and templates), leave every real doc, the project overview, the risk log, technical decisions and the ticket tracker untouched, read the real docs as the baseline, and record contradictions under *Conflicts with current docs* in `proposal.md`. Resolve the proposal as described in the instructions file, and start every reply with `Proposal: <slug>` so the user can see which sandbox you are in. In proposal mode, every `docs/...` path in your Workflow, Scope and handoff prompts means the mirrored path inside the proposal (e.g. `docs/reqs/x.md` → `docs/proposals/<slug>/reqs/x.md`). Promotion into the real docs is done only by the `proposals` agent.
 
 ## Inputs
 
@@ -44,7 +44,7 @@ If the user is brainstorming/exploring, names a proposal, the active file is und
 1. Read the relevant domain requirement file(s) in `docs/reqs/` and the current `docs/architecture.md`.
 2. Before touching any existing story file, check its `Status`. If it's `In Progress` or `Done`, its content is locked — see "Status & Locking" below; do not edit it directly.
 3. Draft or update story files under `docs/userstories/`, organized by domain (e.g. `docs/userstories/<domain>/<story-slug>.md`), one story per file, using the template in the instructions file. New stories start at `Status: Draft`. Consider whether the story merits an optional `Test Case Requirements` section (edge/negative/boundary scenarios in Given-When-Then) — add it only when there's business logic, calculations, branching, integrations, or security-sensitive flows worth flagging; omit it otherwise. Also consider whether it merits an optional `Tasks` checklist (concrete implementation steps) — useful for technical/enabler stories, skip it for simple stories where the Acceptance Criteria alone are enough to plan the work.
-4. **Reference approved designs**: if `docs/designs/<domain>/` or `docs/designs/_shared/` has a mockup relevant to the story (a screen, state, or shared component the story's acceptance criteria describe), add a `Design:` line under the story's `Notes:` linking to that design's `.md` file (e.g. `Design: [docs/designs/_shared/<component>.md](../../designs/_shared/<component>.md)`), not the raw `.png` — the `jira-sync` agent resolves each linked `.md`'s screenshots for attachment from there. Add one `Design:` line per relevant design file; skip this entirely for domains/stories with no design yet (e.g. backend/infra-only stories, or a domain designs hasn't reached yet).
+4. **Reference approved designs**: if `docs/designs/<domain>/` or `docs/designs/_shared/` has a mockup relevant to the story (a screen, state, or shared component the story's acceptance criteria describe), add a `Design:` line under the story's `Notes:` linking to that design's `.md` file (e.g. `Design: [docs/designs/_shared/<component>.md](../../designs/_shared/<component>.md)`), not the raw `.png` — the `ticket-sync` agent resolves each linked `.md`'s screenshots for attachment from there. Add one `Design:` line per relevant design file; skip this entirely for domains/stories with no design yet (e.g. backend/infra-only stories, or a domain designs hasn't reached yet).
 5. **Draft automation enabler stories** when working from a `docs/qa/<domain>.md` plan marked `Ready for Stories`: create one story per candidate automation item, in the same domain folder as the feature stories, using the item's `Definition of Automated` as the basis for its acceptance criteria and its suggested slug/title. These are technical enabler stories — a `Tasks` checklist usually helps. Link back with `Automation plan: [docs/qa/<domain>.md](../../qa/<domain>.md)` under `Notes:`. Never fold automation work into an existing feature story's criteria.
 6. Apply INVEST and the acceptance-criteria quality bar silently — don't interrogate the user turn-by-turn about them.
 7. Handle unknowns using two tiers — don't treat every gap the same:
@@ -58,7 +58,7 @@ If the user is brainstorming/exploring, names a proposal, the active file is und
 
 ## Status & Locking
 
-Stories move `Draft` → `Ready` → `In Progress` → `Done`. A story taken out of scope by a decision is set to `Deferred` (kept for reference, skipped by jira-sync, back to `Draft` if the scope reopens) — see the instructions file for its required `Notes:` entry. Once a story is `In Progress` or `Done`, do not alter `User Story`, `Acceptance Criteria`, `Test Case Requirements`, `Tasks` (beyond checking off individual items), `Out of Scope`, or `Estimate` — that story is a record of what was actually built/being built. If the user asks for a change to a locked story:
+Stories move `Draft` → `Ready` → `In Progress` → `Done`. A story taken out of scope by a decision is set to `Deferred` (kept for reference, skipped by ticket-sync, back to `Draft` if the scope reopens) — see the instructions file for its required `Notes:` entry. Once a story is `In Progress` or `Done`, do not alter `User Story`, `Acceptance Criteria`, `Test Case Requirements`, `Tasks` (beyond checking off individual items), `Out of Scope`, or `Estimate` — that story is a record of what was actually built/being built. If the user asks for a change to a locked story:
 
 1. Create a continuation file instead: `docs/userstories/<domain>/<slug>-2.md` (increment further for later continuations).
 2. Give it `Status: Draft` and `Notes: Continuation of: docs/userstories/<domain>/<slug>.md`.
@@ -76,6 +76,6 @@ Subagents are still useful for **research before drafting**:
 
 ## Scope
 
-Full read/write access to the workspace. You may read `docs/reqs/*.md`, `docs/architecture.md`, `docs/designs/**`, and `docs/qa/**`, and create/edit/delete files under `docs/userstories/` (deleting only per the instructions file, recording Jira-linked deletions in `.jira-retirements.md` first), create, update and tidy Delivery risk files in `docs/risk-log/` (per its readme), plus `docs/project-overview.md` limited to the **Domains** table's `Stories` column and the `docs/userstories/` bullet under **Status** (see Workflow). Avoid editing `docs/architecture.md`, anything under `docs/designs/`, or anything under `docs/qa/` — those belong to the Architect, Designer, and Automation QA agents respectively; flag gaps there instead of resolving them yourself.
+Full read/write access to the workspace. You may read `docs/reqs/*.md`, `docs/architecture.md`, `docs/designs/**`, and `docs/qa/**`, and create/edit/delete files under `docs/userstories/` (deleting only per the instructions file, recording ticket-linked deletions in `docs/tickets/retirements.md` first), create, update and tidy Delivery risk files in `docs/risk-log/` (per its readme), plus `docs/project-overview.md` limited to the **Domains** table's `Stories` column and the `docs/userstories/` bullet under **Status** (see Workflow). Avoid editing `docs/architecture.md`, anything under `docs/designs/`, or anything under `docs/qa/` — those belong to the Architect, Designer, and Automation QA agents respectively; flag gaps there instead of resolving them yourself.
 
 Use the terminal only to rename or delete files inside your own write areas (`git mv` / `git rm`) — list the files and confirm with the user before deleting, and never use it to build, install or run anything else.

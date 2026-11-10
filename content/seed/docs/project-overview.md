@@ -19,7 +19,7 @@ flowchart LR
     ARCH --> DES[designs/&lt;domain&gt;/]
     ARCH --> STORY[userstories/&lt;domain&gt;/]
     DES --> STORY
-    STORY --> JIRA[Jira]
+    STORY --> TRACKER[Ticket tracker]
 ```
 
 Not every domain needs every stage — a backend/infra-only piece of work can skip straight from `architecture.md` to `userstories/` with no `designs/` entry. The **Domains** table below shows how far each domain has progressed through this pipeline.
@@ -41,7 +41,7 @@ See [architecture.md](architecture.md) for full detail: diagrams, API shapes, da
 
 ## Status
 
-Dated, newest-first status bullets — one per agent that changed the big picture (business-analyst, architect, designer, product-owner, automation-qa, jira-sync).
+Dated, newest-first status bullets — one per agent that changed the big picture (business-analyst, architect, designer, product-owner, automation-qa, ticket-sync).
 
 ## Where to Go Next
 
@@ -53,4 +53,4 @@ Switch to the relevant agent from the Chat view's agent picker (see [readme.md](
 - Need screens/components designed for a domain with a UI? Use the **designer** agent.
 - Ready to turn requirements + architecture (+ designs) into deliverable work? Use the **product-owner** agent.
 - Ready to plan test automation? Use the **automation-qa** agent.
-- Ready to push `Status: Ready` stories into Jira? Use the **jira-sync** agent.
+- Ready to push `Status: Ready` stories into the ticket tracker (Jira or Kaneo)? Use the **ticket-sync** agent.

@@ -6,8 +6,8 @@ NuGet package that delivers the Sdlc.Planner AI harness (Copilot agents, instruc
 
 | Kind | Files | Behaviour |
 |---|---|---|
-| **Managed** | `.github/agents/{business-analyst,architect,designer,product-owner,automation-qa,proposals}.agent.md`, `.github/instructions/*.instructions.md` | Overwritten on build when the package changes. Don't edit in the consuming repo. |
-| **Seed** | `.github/copilot-instructions.md`, `.github/agents/jira-sync.agent.md`, `.vscode/mcp.json`, `docs/{readme,pid,project-overview,architecture}.md`, `docs/proposals/{readme,_template}.md`, `docs/{technical-decisions,risk-log}/{readme,_template}.md`, `docs/reqs/{readme,_template}.md`, `docs/designs/design.md` | Copied only if missing, so project-specific content is never overwritten. Decisions and risks are one date-named file per entry (no sequential numbers, no index) so feature branches never conflict. jira-sync, mcp.json and design.md contain placeholders to fill in. |
+| **Managed** | `.github/agents/{business-analyst,architect,designer,product-owner,automation-qa,proposals,ticket-sync}.agent.md`, `.github/trackers/{jira,kaneo}.md`, `.github/instructions/*.instructions.md` | Overwritten on build when the package changes. Don't edit in the consuming repo. |
+| **Seed** | `.github/copilot-instructions.md`, `docs/tickets/config.md`, `docs/{readme,pid,project-overview,architecture}.md`, `docs/proposals/{readme,_template}.md`, `docs/{technical-decisions,risk-log}/{readme,_template}.md`, `docs/reqs/{readme,_template}.md`, `docs/designs/design.md` | Copied only if missing, so project-specific content is never overwritten. Decisions and risks are one date-named file per entry (no sequential numbers, no index) so feature branches never conflict. `docs/tickets/config.md` and design.md contain placeholders to fill in. |
 
 The package also ships `skills/sdlc-planner/SKILL.md` so skill-discovery tools (e.g. `dotnet-package-skills`) can pick it up.
 
@@ -49,3 +49,17 @@ dotnet pack -c Release -o ./artifacts
 dotnet add package Sdlc.Planner --version 1.0.0
 dotnet build
 ```
+
+## Ticket trackers (Jira or Kaneo)
+
+Ticket handling is split three ways: the tracker-neutral workflow (`ticket-sync` agent, managed), one adapter per tracker (`.github/trackers/`, managed), and your project settings (`docs/tickets/config.md`, seed). Set `Provider:` to `jira` or `kaneo` in the config; the agent adds the matching MCP server to `.vscode/mcp.json` if missing. Kaneo has no epics or attachments, so groups become a labelled parent task and design images are linked as repo paths.
+
+**Migrating from the old seeded jira-sync agent:** delete `.github/agents/jira-sync.agent.md`, move your Jira settings into `docs/tickets/config.md`, and rename `.jira-*` files to `docs/tickets/`. `Jira:` story lines are rewritten to `Ticket:` automatically when touched.
+
+## License
+
+[MIT](LICENSE) © Daniel Vella. Use it freely for anything; just keep the copyright notice (a mention is appreciated).
+
+`docs/designs/design.md` is a starter design system: edit it or replace the whole file with your own brand guide. It is a seed file, so package updates never overwrite it, and the designer agent follows whatever it contains.
+
+The design defaults (Inter, Tailwind CSS, Font Awesome) are only named as suggestions in `design.md`; none of their files are bundled, and each remains under its own license.

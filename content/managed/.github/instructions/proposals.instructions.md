@@ -4,7 +4,7 @@ description: 'Rules for proposals: isolated brainstorming/work-in-progress works
 ---
 # Proposals
 
-A **proposal** is an isolated sandbox for an idea you're still exploring — requirements, architecture notes, designs, risks, decisions, even draft stories — that you may show to stakeholders, iterate on, run alongside other ideas, discard, or promote. **The real documentation (`docs/reqs/`, `docs/architecture.md`, `docs/designs/`, `docs/userstories/`, `docs/technical-decisions/`, `docs/risk-log/`, `docs/project-overview.md`, `docs/qa/`) and Jira only ever contain approved work.**
+A **proposal** is an isolated sandbox for an idea you're still exploring — requirements, architecture notes, designs, risks, decisions, even draft stories — that you may show to stakeholders, iterate on, run alongside other ideas, discard, or promote. **The real documentation (`docs/reqs/`, `docs/architecture.md`, `docs/designs/`, `docs/userstories/`, `docs/technical-decisions/`, `docs/risk-log/`, `docs/project-overview.md`, `docs/qa/`) and the ticket tracker only ever contain approved work.**
 
 ## Layout
 
@@ -51,12 +51,12 @@ Safeguards against a stale pointer:
 When the user says they are brainstorming / exploring / drafting a proposal, or a proposal is resolved by the order above:
 
 1. Identify the proposal slug as described above.
-2. **Write only inside `docs/proposals/<slug>/`**, mirroring the real path. Do not edit anything else — including `docs/project-overview.md`, the risk log, technical decisions, and `.jira-*` files.
-3. **Do not sync to Jira** and do not treat proposal stories as `Ready`. The jira-sync agent ignores `docs/proposals/**` completely.
+2. **Write only inside `docs/proposals/<slug>/`**, mirroring the real path. Do not edit anything else — including `docs/project-overview.md`, the risk log, technical decisions, and `docs/tickets/` files.
+3. **Do not sync to the ticket tracker** and do not treat proposal stories as `Ready`. The ticket-sync agent ignores `docs/proposals/**` completely.
 4. Read the real docs as the baseline. Where the proposal contradicts an `Accepted` technical decision or existing requirement, record it under *Conflicts with current docs* in `proposal.md` instead of resolving it silently.
 5. Keep `proposal.md` current: summary, status, what files exist, open questions, conflicts, and stakeholder feedback received.
 6. Keep proposals tidy: delete stale drafts and scratch files inside the proposal as you iterate.
 
 ## Promotion
 
-Only the `proposals` agent promotes, and only when the user explicitly approves. See its workflow. After promotion the proposal folder is deleted and the normal pipeline takes over (architect validation → designer → product-owner → automation-qa → jira-sync).
+Only the `proposals` agent promotes, and only when the user explicitly approves. See its workflow. After promotion the proposal folder is deleted and the normal pipeline takes over (architect validation → designer → product-owner → automation-qa → ticket-sync).
