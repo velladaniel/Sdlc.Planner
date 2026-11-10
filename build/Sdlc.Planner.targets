@@ -1,0 +1,44 @@
+<Project>
+
+  <PropertyGroup>
+    <SdlcPlannerSync Condition="'$(SdlcPlannerSync)' == ''">true</SdlcPlannerSync>
+    <SdlcPlannerPackageRoot>$(MSBuildThisFileDirectory)..\sdlc-planner\</SdlcPlannerPackageRoot>
+  </PropertyGroup>
+
+  <!-- Target repo root: nearest .git folder, else .git file (worktree/submodule), else the folder holding $(SolutionDir) (when building a solution), else the project folder.
+       Set SdlcPlannerRoot in Directory.Build.props (or -p:SdlcPlannerRoot=...) to pin it explicitly. -->
+  <PropertyGroup Condition="'$(SdlcPlannerRoot)' == ''">
+    <SdlcPlannerRoot>$([MSBuild]::GetDirectoryNameOfFileAbove('$(MSBuildProjectDirectory)', '.git\HEAD'))</SdlcPlannerRoot>
+    <SdlcPlannerRoot Condition="'$(SdlcPlannerRoot)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove('$(MSBuildProjectDirectory)', '.git'))</SdlcPlannerRoot>
+    <SdlcPlannerRoot Condition="'$(SdlcPlannerRoot)' == '' And '$(SolutionDir)' != '' And '$(SolutionDir)' != '*Undefined*'">$(SolutionDir)</SdlcPlannerRoot>
+    <SdlcPlannerRoot Condition="'$(SdlcPlannerRoot)' == ''">$(MSBuildProjectDirectory)</SdlcPlannerRoot>
+  </PropertyGroup>
+
+  <!-- Managed files are overwritten whenever the package version changes. Seed files are copied only if missing. -->
+  <Target Name="SdlcPlannerSync"
+          BeforeTargets="BeforeBuild"
+          Condition="'$(SdlcPlannerSync)' == 'true' And Exists('$(SdlcPlannerPackageRoot)')">
+
+    <PropertyGroup>
+      <_SdlcPlannerRootSlash>$([MSBuild]::EnsureTrailingSlash('$(SdlcPlannerRoot)'))</_SdlcPlannerRootSlash>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <_SdlcPlannerManaged Include="$(SdlcPlannerPackageRoot)managed\**\*" />
+      <_SdlcPlannerSeed Include="$(SdlcPlannerPackageRoot)seed\**\*" />
+      <_SdlcPlannerSeedMissing Include="@(_SdlcPlannerSeed)"
+                               Condition="!Exists('$(_SdlcPlannerRootSlash)%(RecursiveDir)%(Filename)%(Extension)')" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(_SdlcPlannerManaged)"
+          DestinationFiles="@(_SdlcPlannerManaged->'$(_SdlcPlannerRootSlash)%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="true" />
+
+    <Copy SourceFiles="@(_SdlcPlannerSeedMissing)"
+          DestinationFiles="@(_SdlcPlannerSeedMissing->'$(_SdlcPlannerRootSlash)%(RecursiveDir)%(Filename)%(Extension)')" />
+
+    <Message Importance="high"
+             Text="Sdlc.Planner: synced @(_SdlcPlannerManaged->Count()) managed file(s), seeded @(_SdlcPlannerSeedMissing->Count()) new file(s) into $(_SdlcPlannerRootSlash)" />
+  </Target>
+
+</Project>
