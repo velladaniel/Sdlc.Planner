@@ -10,7 +10,7 @@ A living log of project risks — things that *might* go wrong and need ongoing 
 
 ## How This Log Works
 
-- **File name = risk ID**: `YYYY-MM-DD-short-kebab-slug.md` (for example `2026-11-09-shared-ui-package-coupling.md`), using the date the risk was raised. There are no sequential numbers and no index file — both are merge-conflict magnets. If two risks share a date and slug, add a suffix to the slug. Cite a risk by its file name without the extension.
+- **File name = risk ID**: `YYYY-MM-DD-short-kebab-slug.md` (for example `2026-11-09-shared-ui-package-coupling.md`), using the date the risk was raised. There are no sequential numbers and no index file — both are merge-conflict magnets. If two risks share a date and slug, add a suffix to the slug. Keep the slug short: 2–5 words (about 40 characters at most) naming the topic, not the full title (e.g. `audit-ledger`, not `administration-s-trading-tools-owned-scope-is-the-manifest-catalog`) — the name is repeated in every link and code comment that cites the entry. Cite a risk by its file name without the extension.
 - **Finding risks**: list the folder (names sort chronologically) or search for `Status: Open`. Don't maintain a hand-written summary table.
 - **Categories**: `Business`, `Technical`, `Delivery`, `Compliance`, `Other`.
 - **Severity**: `Likelihood` and `Impact` are each `Low` / `Medium` / `High`.

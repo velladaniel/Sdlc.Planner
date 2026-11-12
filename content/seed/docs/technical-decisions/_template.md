@@ -1,6 +1,6 @@
 # <Short decision title>
 
-> Copy this file to `YYYY-MM-DD-short-kebab-slug.md` in this folder (date = when the decision was made). The file name is the decision's ID.
+> Copy this file to `YYYY-MM-DD-short-kebab-slug.md` (slug: 2–5 words, max ~40 characters, naming the topic — not the full title) in this folder (date = when the decision was made). The file name is the decision's ID.
 
 - **Status**: Accepted
 - **Date**: YYYY-MM-DD

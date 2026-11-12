@@ -6,7 +6,7 @@ A log of significant technical decisions made for this project — the "why" beh
 
 ## How This Log Works
 
-- **File name = decision ID**: `YYYY-MM-DD-short-kebab-slug.md` (for example `2026-11-09-entra-id-identity-provider.md`), using the date the decision was made. There are no sequential numbers and no index file — both are merge-conflict magnets. If two decisions share a date and slug, add a suffix to the slug. Cite a decision by its file name without the extension.
+- **File name = decision ID**: `YYYY-MM-DD-short-kebab-slug.md` (for example `2026-11-09-entra-id-identity-provider.md`), using the date the decision was made. There are no sequential numbers and no index file — both are merge-conflict magnets. If two decisions share a date and slug, add a suffix to the slug. Keep the slug short: 2–5 words (about 40 characters at most) naming the topic, not the full title (e.g. `audit-ledger`, not `administration-s-trading-tools-owned-scope-is-the-manifest-catalog`) — the name is repeated in every link and code comment that cites the entry. Cite a decision by its file name without the extension.
 - **Finding decisions**: list the folder (names sort chronologically) or search for `Status: Accepted`. Don't maintain a hand-written table of contents.
 - **When to add an entry**: whenever a decision is "high-impact / hard to reverse" (a technology/pattern choice affecting multiple domains, a structural change, anything future work builds on). Small, easily-revised details stay as inline `Assumptions & Open Questions` notes in `architecture.md` or a domain's `reqs/<domain>.md`.
 - **Statuses**: only two — `Accepted` or `Superseded by <decision-id>`. A decision is logged once it's actually been made.

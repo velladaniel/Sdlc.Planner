@@ -1,6 +1,6 @@
 # <Short risk title>
 
-> Copy this file to `YYYY-MM-DD-short-kebab-slug.md` in this folder (date = when the risk was raised). The file name is the risk's ID.
+> Copy this file to `YYYY-MM-DD-short-kebab-slug.md` (slug: 2–5 words, max ~40 characters, naming the topic — not the full title) in this folder (date = when the risk was raised). The file name is the risk's ID.
 
 - **Category**: Business | Technical | Delivery | Compliance | Other
 - **Status**: Open
