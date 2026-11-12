@@ -1,5 +1,9 @@
 # Sdlc.Planner
 
+[![NuGet](https://img.shields.io/nuget/v/Sdlc.Planner.svg)](https://www.nuget.org/packages/Sdlc.Planner) [![Downloads](https://img.shields.io/nuget/dt/Sdlc.Planner.svg)](https://www.nuget.org/packages/Sdlc.Planner)
+
+Published on [nuget.org](https://www.nuget.org/packages/Sdlc.Planner): `dotnet add <project> package Sdlc.Planner`.
+
 NuGet package that delivers the Sdlc.Planner AI harness (Copilot agents, instructions and docs templates) into any repo, and keeps it up to date when the package version changes.
 
 ## What gets installed

@@ -11,6 +11,9 @@
     <Description>Sdlc.Planner AI harness: Copilot agents, instructions and docs templates (requirements, architecture, designs, user stories, QA, ticket sync for Jira or Kaneo) synced into the consuming repo on build.</Description>
     <PackageTags>copilot;agents;skills;sdlc;planning</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl>https://www.nuget.org/packages/Sdlc.Planner</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/velladaniel/Sdlc.Planner</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
 
     <!-- Content-only package: no assembly, no dependencies. -->
     <IncludeBuildOutput>false</IncludeBuildOutput>
